@@ -1,4 +1,4 @@
-
+// test chanes 
 const express = require("express");
 const mysql = require("mysql2/promise");
 const session = require("express-session");
@@ -17,13 +17,23 @@ app.listen(PORT, () => {
 
 const mysql = require("mysql2/promise");
 
-const pool = mysql.createPool(process.env.MYSQL_URL);
+const url = new URL(process.env.MYSQL_URL);
+
+const pool = mysql.createPool({
+  host: url.hostname,
+  user: url.username,
+  password: url.password,
+  database: url.pathname.replace("/", ""),
+  port: url.port,
+});
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: "odi.wahib2005@gmail.com",
-    pass: "ywpx lvnh hevb giun" // Gmail App Password
-  }
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
 /* ================= MIDDLEWARE ================= */
