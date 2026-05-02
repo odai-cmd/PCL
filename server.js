@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const path = require("path");
 const nodemailer = require("nodemailer");
-
+const mysql = require("mysql2/promise");
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -14,9 +14,6 @@ app.listen(PORT, () => {
 });
 
 /* ================= DATABASE ================= */
-
-const mysql = require("mysql2/promise");
-
 const url = new URL(process.env.MYSQL_URL);
 
 const pool = mysql.createPool({
