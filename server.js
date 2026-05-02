@@ -18,6 +18,7 @@ const pool = mysql.createPool({
   database: url.pathname.replace("/", ""),
   port: url.port,
 });
+ 
 
 /* ================= EMAIL ================= */
 const transporter = nodemailer.createTransport({
