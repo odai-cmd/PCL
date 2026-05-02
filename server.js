@@ -75,9 +75,16 @@ app.use(session({
   }
 }));
 
-    app.use(express.static(path.join(__dirname, "public")));
-    app.use(express.static(path.join(__dirname, "auth")));
-    app.use(express.static(path.join(__dirname, "uploads")));
+  app.use(express.static(path.join(__dirname, "public")));
+  app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+  app.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "auth", "login.html"));
+  });
+
+  app.get("/register", (req, res) => {
+    res.sendFile(path.join(__dirname, "auth", "register.html"));
+  });
 /* ================= AUTH ================= */
 
 app.post("/api/register", async (req, res) => {
