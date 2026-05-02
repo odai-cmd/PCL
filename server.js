@@ -10,33 +10,33 @@ const app = express();
 
 /* ================= DATABASE ================= */
 
-if (!process.env.MYSQL_URL) {
-  console.error("❌ MYSQL_URL is not set");
-  process.exit(1);
+/* ================= DATABASE ================= */
+let pool = null;
+
+async function initDB() {
+  try {
+    if (!process.env.MYSQL_URL) {
+      console.log("MYSQL_URL not set yet. Waiting...");
+      return;
+    }
+
+    const url = new URL(process.env.MYSQL_URL);
+
+    pool = mysql.createPool({
+      host: url.hostname,
+      user: url.username,
+      password: url.password,
+      database: url.pathname.replace("/", ""),
+      port: url.port || 3306,
+    });
+
+    console.log("✅ MySQL Connected");
+  } catch (err) {
+    console.log("DB init error:", err.message);
+  }
 }
 
-let pool;
-
-try {
-  const url = new URL(process.env.MYSQL_URL);
-
-  pool = mysql.createPool({
-    host: url.hostname,
-    user: url.username,
-    password: url.password,
-    database: url.pathname.replace("/", ""),
-    port: url.port || 3306,
-    waitForConnections: true,
-    connectionLimit: 10,
-  });
-
-  console.log("✅ MySQL pool created");
-} catch (err) {
-  console.error("❌ Invalid MYSQL_URL");
-  console.error(err);
-  process.exit(1);
-}
-
+initDB();
 /* ================= EMAIL ================= */
 
 const transporter = nodemailer.createTransport({
@@ -206,7 +206,7 @@ app.get("/", (req, res) => {
 
 /* ================= START SERVER ================= */
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log("✅ Server running on port " + PORT);
