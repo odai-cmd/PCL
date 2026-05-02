@@ -12,12 +12,9 @@ const PORT = 3000;
 
 /* ================= DATABASE ================= */
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "",
-  database: process.env.DB_NAME || "nardo",
-});
+const mysql = require("mysql2/promise");
+
+const pool = mysql.createPool(process.env.MYSQL_URL);
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
