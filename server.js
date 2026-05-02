@@ -9,16 +9,35 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 /* ================= DATABASE ================= */
-const url = new URL(process.env.MYSQL_URL);
+/* ================= DATABASE ================= */
 
-const pool = mysql.createPool({
-  host: url.hostname,
-  user: url.username,
-  password: url.password,
-  database: url.pathname.replace("/", ""),
-  port: url.port,
-});
- 
+if (!process.env.MYSQL_URL) {
+  console.error("MYSQL_URL is not set in environment variables");
+  process.exit(1);
+}
+
+const mysql = require("mysql2/promise");
+
+let pool;
+
+try {
+  const url = new URL(process.env.MYSQL_URL);
+
+  pool = mysql.createPool({
+    host: url.hostname,
+    user: url.username,
+    password: url.password,
+    database: url.pathname.replace("/", ""),
+    port: url.port || 3306,
+  });
+
+  console.log("✅ MySQL pool created");
+
+} catch (err) {
+  console.error("❌ Invalid MYSQL_URL:", process.env.MYSQL_URL);
+  console.error(err);
+  process.exit(1);
+}
 
 /* ================= EMAIL ================= */
 const transporter = nodemailer.createTransport({
