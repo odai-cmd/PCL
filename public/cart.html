@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart - NARDO</title>
+
+<style>
+body {
+  background: linear-gradient(135deg, #0e0e0e, #1b1b1b);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+header {
+  background: #111;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  color: #d4a047;
+}
+
+.back-btn {
+  border: 1px solid #d4a047;
+  background: transparent;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cart-wrapper {
+  max-width: 950px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #1f1f1f;
+  border-radius: 16px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #222;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.cart-item img {
+  width: 90px;
+  border-radius: 10px;
+}
+
+.item-info {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.item-name {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.item-price {
+  color: #d4a047;
+}
+
+.quantity-btn {
+  background: #d4a047;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.remove-btn {
+  background: #ff5555;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.total {
+  text-align: right;
+  font-size: 20px;
+  color: #d4a047;
+  margin-top: 20px;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 18px;
+  background: #d4a047;
+  color: #111;
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>NARDO</h1>
+  <button class="back-btn" onclick="window.location.href='index.html'">← Back to Shop</button>
+</header>
+
+<div class="cart-wrapper">
+  <h2 style="text-align:center;">Your Shopping Cart</h2>
+  <div id="cartContainer"></div>
+</div>
+
+<script>
+
+async function loadCart() {
+
+  const res = await fetch('/api/cart');
+
+  const cart = await res.json(); // ✅ your server returns array
+
+  const container = document.getElementById("cartContainer");
+
+  container.innerHTML = "";
+
+  if (cart.length === 0) {
+
+    container.innerHTML =
+    "<p style='text-align:center'>Your cart is empty 🛒</p>";
+
+    return;
+
+  }
+
+  let total = 0;
+
+  cart.forEach(item => {
+
+    const price = Number(item.price);
+
+    const qty = Number(item.quantity);
+
+    total += price * qty;
+
+    container.innerHTML += `
+
+      <div class="cart-item">
+
+        <img src="${item.image}" alt="${item.product_name}">
+
+        <div class="item-info">
+
+          <div class="item-name">
+
+            ${item.product_name}
+
+          </div>
+
+          <div class="item-price">
+
+            $${price}
+
+          </div>
+
+        </div>
+
+        <div>
+
+          <button class="quantity-btn"
+          onclick="updateQuantity(${item.id}, 'minus')">-</button>
+
+          <span style="margin:0 10px;">
+
+            ${qty}
+
+          </span>
+
+          <button class="quantity-btn"
+          onclick="updateQuantity(${item.id}, 'plus')">+</button>
+
+        </div>
+
+        <button class="remove-btn"
+        onclick="removeItem(${item.id})">
+
+        Remove
+
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+
+  container.innerHTML += `
+
+    <div class="total">
+
+      Total: $${total.toFixed(2)}
+
+    </div>
+
+    <button class="checkout-btn">
+
+      Proceed to Checkout
+
+    </button>
+
+  `;
+
+}
+
+
+
+async function updateQuantity(id, action){
+
+  await fetch(`/api/cart/${id}/${action}`, {
+
+    method: "PUT"
+
+  });
+
+  loadCart();
+
+}
+
+
+
+async function removeItem(id){
+
+  await fetch(`/api/cart/${id}`, {
+
+    method: "DELETE"
+
+  });
+
+  loadCart();
+
+}
+
+
+loadCart();
+
+</script>
+<button class="checkout-btn" onclick="location.href='checkout.html'">
+  Proceed to Checkout
+</button>
+
+
+</body>
+</html>

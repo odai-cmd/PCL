@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARDO | Checkout</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .checkout-container {
+      max-width: 600px;
+      margin: 120px auto;
+      background: #1a1a1a;
+      padding: 40px;
+      border-radius: 14px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #222;
+      color: white;
+      margin-bottom: 18px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background: #d4a047;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    button:hover { background: #b98a35; }
+
+    #checkoutMessage {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 16px;
+      color: #d4a047;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="checkout-container">
+  <h2>Checkout</h2>
+
+  <form id="checkoutForm">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email Address" required>
+    <input type="text" name="phone" placeholder="Phone Number" required>
+    <textarea name="address" placeholder="Delivery Address" required></textarea>
+
+    <select name="payment" required>
+      <option value="">Select Payment Method</option>
+      <option value="Cash on Delivery">Cash on Delivery</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+    </select>
+
+    <button type="submit">Place Order</button>
+  </form>
+
+  <p id="checkoutMessage"></p>
+</div>
+
+<script>
+document.getElementById("checkoutForm").onsubmit = async function(e){
+  e.preventDefault();
+
+ const data = {
+  name: this.name.value,
+  email: this.email.value,
+  phone: this.phone.value,
+  address: this.address.value,
+  payment: this.payment.value
+};
+
+fetch("/api/checkout", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(data)
+});
+
+  const response = await fetch("/api/checkout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  const result = await response.json();
+  document.getElementById("checkoutMessage").textContent = result.message;
+};
+</script>
+<script src="script.js"></script>
+</body>
+</html>

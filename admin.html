@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 20px; }
+    #loginBox { background: #fff; padding: 20px; width: 300px; margin: 100px auto; border-radius: 6px; box-shadow: 0 0 8px rgba(0,0,0,0.2); }
+    #dashboard { display: none; }
+    table { width: 100%; background: #fff; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+    th { background: #333; color: #fff; }
+    button { padding: 6px 10px; cursor: pointer; border: none; border-radius: 4px; }
+    #clearAll { background: #000; color: #fff; margin-bottom: 10px; }
+    .deleteBtn { background: #d9534f; color: #fff; }
+    #exportCsv { background: #0275d8; color: #fff; margin-left: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="loginBox">
+    <h3>Admin Login</h3>
+    <input type="password" id="adminPass" placeholder="Enter Password" style="width:100%;padding:8px;">
+    <button id="loginBtn" style="margin-top:10px;width:100%;background:#333;color:#fff;">Login</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <h1>Admin Dashboard</h1>
+    <button id="clearAll">Clear All</button>
+    <button id="exportCsv">Export CSV</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Type</th><th>Name</th><th>Email</th><th>Message</th><th>Product</th><th>Finish</th><th>Texture</th><th>Date</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+<script>
+  const PASSWORD = "admin123"; // Change this anytime
+
+  document.getElementById('loginBtn').onclick = () => {
+    if(document.getElementById('adminPass').value === PASSWORD){
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadData();
+    } else {
+      alert("Wrong password");
+    }
+  }
+
+  async function loadData(){
+    const res = await fetch('/api/submissions');
+    const data = await res.json();
+    const tbody = document.getElementById('rows');
+    tbody.innerHTML = '';
+
+    data.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.id}</td><td>${r.type||''}</td><td>${r.name||''}</td><td>${r.email||''}</td><td>${r.message||''}</td><td>${r.product||''}</td><td>${r.finish||''}</td><td>${r.texture||''}</td><td>${r.submitted_at||''}</td>
+        <td><button class="deleteBtn" onclick="del(${r.id})">Delete</button></td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function del(id){
+    await fetch(`/api/submissions/${id}`, { method: 'DELETE' });
+    loadData();
+  }
+
+  document.getElementById('clearAll').onclick = async () => {
+    if(confirm('Clear ALL submissions?')){
+      await fetch('/api/submissions', { method: 'DELETE' });
+      loadData();
+    }
+  }
+
+  document.getElementById('exportCsv').onclick = () => {
+    const rows = Array.from(document.querySelectorAll('table tr'));
+    const csv = rows.map(r => Array.from(r.children).map(td => '"'+td.innerText+'"').join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'submissions.csv';
+    a.click();
+  }
+</script>
+<script src="script.js"></script>
+</body>
+</html>

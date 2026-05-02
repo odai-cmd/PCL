@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Profile</title>
+
+<style>
+
+body{
+background:#0e0e0e;
+color:white;
+font-family:Poppins;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.profile-card{
+background:#1f1f1f;
+padding:40px;
+border-radius:15px;
+width:400px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.profile-card h2{
+color:#d4a047;
+margin-bottom:20px;
+}
+
+.profile-item{
+margin:15px 0;
+font-size:18px;
+}
+
+.logout-btn{
+margin-top:25px;
+padding:12px 20px;
+border:none;
+background:#d4a047;
+color:black;
+border-radius:8px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="profile-card">
+
+<h2>User Profile</h2>
+
+<div class="profile-item">
+<strong>Name:</strong> <span id="name"></span>
+</div>
+
+<div class="profile-item">
+<strong>Email:</strong> <span id="email"></span>
+</div>
+
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+</div>
+
+<script>
+
+async function loadProfile(){
+
+const res = await fetch("/api/profile");
+
+if(res.status === 401){
+window.location.href = "/login";
+return;
+}
+
+const user = await res.json();
+
+document.getElementById("name").innerText = user.name;
+document.getElementById("email").innerText = user.email;
+
+}
+
+async function logout(){
+
+await fetch("/api/logout");
+window.location.href = "/";
+
+}
+
+loadProfile();
+
+</script>
+
+</body>
+</html>

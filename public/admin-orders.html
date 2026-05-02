@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Orders</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="background:#111;color:white;font-family:Poppins">
+
+<h2 style="text-align:center;margin:40px 0">All Orders</h2>
+
+<div id="ordersContainer" style="max-width:1000px;margin:auto"></div>
+
+<script>
+async function loadOrders() {
+  const res = await fetch("/api/admin/orders");
+  const orders = await res.json();
+
+  const container = document.getElementById("ordersContainer");
+  container.innerHTML = "";
+
+  orders.forEach(order => {
+    const data = JSON.parse(order.items);
+
+    let productsHTML = "";
+    data.products.forEach(p => {
+      productsHTML += `
+        <tr>
+          <td>${p.product_name}</td>
+          <td>${p.price}</td>
+          <td>${p.quantity}</td>
+        </tr>
+      `;
+    });
+
+    container.innerHTML += `
+      <div style="background:#1a1a1a;padding:20px;margin-bottom:30px;border-radius:10px">
+        <h3>Order #${order.id}</h3>
+        <p><b>Name:</b> ${data.customer.name}</p>
+        <p><b>Email:</b> ${data.customer.email}</p>
+        <p><b>Phone:</b> ${data.customer.phone}</p>
+        <p><b>Address:</b> ${data.customer.address}</p>
+        <p><b>Payment:</b> ${order.payment_method}</p>
+        <p><b>Total:</b> $${order.total}</p>
+          <select onchange="updateStatus(${order.id}, this.value)">
+          <option ${order.status==='Placed'?'selected':''}>Placed</option>
+          <option ${order.status==='Shipped'?'selected':''}>Shipped</option>
+          <option ${order.status==='Delivered'?'selected':''}>Delivered</option>
+        </select>
+
+        <table border="1" width="100%" style="margin-top:15px;text-align:center">
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qty</th>
+          </tr>
+          ${productsHTML}
+        </table>
+      </div>
+    `;
+  });
+}
+
+loadOrders();
+</script>
+  <script>
+  async function updateStatus(id, status) {
+    await fetch("/api/admin/update-status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, status })
+    });
+    alert("Status updated");
+  }
+  </script>
+
+</body>
+</html>

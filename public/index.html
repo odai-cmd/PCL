@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NARDO - Upcycled Tire Furniture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom styles for animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-title-animate {
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeInScale 1s ease-out forwards;
+        }
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        /* Custom styles for customizer */
+        .customizer-label {
+            display: block;
+            padding: 1rem;
+            border: 2px solid #e7e5e4; /* stone-200 */
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            text-align: center;
+        }
+        .customizer-label:hover {
+            border-color: #d6d3d1; /* stone-300 */
+            transform: translateY(-2px);
+        }
+        .customizer-input:checked + .customizer-label {
+            border-color: #a16207; /* amber-700 */
+            background-color: #fef3c7; /* amber-100 */
+            font-weight: 600; /* semibold */
+            color: #854d0e; /* amber-800 */
+            box-shadow: 0 0 0 2px #fcd34d; /* amber-300 */
+            transform: translateY(-2px);
+        }
+    </style>
+         <style>
+            
+/* Animated Customize Order Button */
+     .order-btn {
+        display: inline-block;
+        padding: 15px 35px;
+        background: #d4a047;
+        color: #111;
+        font-weight: 600;
+        border-radius: 10px;
+         text-decoration: none;
+        letter-spacing: 1px;
+        transition: 0.4s;
+        box-shadow: 0 0 0 rgba(212,160,71,0.5);
+        }
+
+   .order-btn:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 18px rgba(212,160,71,0.7);
+        }
+        </style>
+
+</head>
+<body class="bg-stone-100 text-zinc-800 font-sans antialiased">
+
+   <!-- Header & Navigation -->
+<header class="bg-stone-50/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+
+<nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+
+<a href="#home" class="text-2xl font-bold text-zinc-900 tracking-wider hover:scale-105 transition duration-300">
+NARDO
+</a>
+
+
+<div class="hidden md:flex items-center space-x-8">
+
+
+<a href="#about" class="nav-link">About</a>
+
+<a href="#process" class="nav-link">Process</a>
+
+<a href="#gallery" class="nav-link">Gallery</a>
+
+<a href="#customize" class="nav-link">Customize</a>
+
+<a href="#contact" class="nav-link">Contact</a>
+
+
+<a href="cart.html" class="nav-link text-xl">
+🛒 <span id="cart-count"></span>
+</a>
+
+
+
+<!-- LOGIN REGISTER -->
+<a href="/login" id="loginBtn" class="nav-btn">Login</a>
+
+<a href="/register" id="registerBtn" class="nav-btn">Register</a>
+
+
+<!-- AFTER LOGIN -->
+<a href="/profile.html" id="profileBtn" class="nav-btn hidden">Profile</a>
+
+<a href="#" onclick="logout()" id="logoutBtn" class="nav-btn hidden">Logout</a>
+
+
+
+<span id="welcomeText" class="text-amber-700 font-semibold hidden"></span>
+
+
+</div>
+
+</nav>
+
+</header>
+
+    <main>
+        <!-- Home (Hero) Section -->
+        <section id="home" class="min-h-screen flex items-center bg-gradient-to-br from-stone-50 via-stone-100 to-amber-100/50">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-zinc-900 leading-tight mb-4 hero-title-animate" style="animation-delay: 0.2s;">
+                    Reclaimed Rubber. <span class="text-amber-700">Redefined Design.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-zinc-600 max-w-3xl mx-auto mb-8 hero-title-animate" style="animation-delay: 0.4s;">
+                    NARDO transforms discarded tires into durable, stylish, and sustainable furniture for the modern conscious consumer.
+                </p>
+                <a href="#gallery" class="bg-amber-800 text-white font-bold py-3 px-8 rounded-full hover:bg-amber-900 transition-all duration-300 transform hover:scale-105 inline-block hero-title-animate" style="animation-delay: 0.6s;">
+                    Explore Our Collection
+                </a>
+            </div>
+        </section>
+
+        <!-- About (Mission) Section -->
+        <section id="about" class="py-20 md:py-32 bg-stone-50">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                    <div class="animate-on-scroll">
+                        <h2 class="text-3xl font-bold text-zinc-900 mb-4">Our Mission: A Circular Future</h2>
+                        <p class="text-zinc-600 mb-4 leading-relaxed">
+                            We believe in a world without waste. NARDO was born from a desire to combat the global tire pollution problem by giving this incredibly resilient material a second life. Our mission is to create beautiful, functional furniture that contributes to a circular economy.
+                        </p>
+                        <p class="text-zinc-600 leading-relaxed">
+                            Each piece is not only a statement of style but a testament to sustainability. The inherent properties of vulcanized rubber make our furniture exceptionally durable, weather-resistant, and perfect for both indoor and outdoor spaces.
+                        </p>
+                    </div>
+                    <div class="animate-on-scroll" style="transition-delay: 200ms;">
+                        <img src="https://picsum.photos/800/600?grayscale" alt="Crafting process" class="rounded-lg shadow-xl w-full h-auto">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section id="process" class="py-20 md:py-32 bg-stone-200">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-zinc-900 mb-2">How It's Made</h2>
+                <p class="text-zinc-600 max-w-2xl mx-auto mb-16">Our meticulous upcycling process ensures every product meets the highest standards of quality and design.</p>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <!-- Step 1 -->
+                    <div class="animate-on-scroll">
+                        <div class="bg-amber-800 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">1</div>
+                        <h3 class="text-xl font-semibold text-zinc-900 mb-2">Collect & Select</h3>
+                        <p class="text-zinc-600">We partner with recycling facilities to source end-of-life tires, carefully selecting them based on quality and structural integrity.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="animate-on-scroll" style="transition-delay: 200ms;">
+                        <div class="bg-amber-800 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2</div>
+                        <h3 class="text-xl font-semibold text-zinc-900 mb-2">Clean & Craft</h3>
+                        <p class="text-zinc-600">Each tire undergoes an intensive, eco-friendly cleaning process. Our artisans then cut, shape, and assemble the raw material.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="animate-on-scroll" style="transition-delay: 400ms;">
+                        <div class="bg-amber-800 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3</div>
+                        <h3 class="text-xl font-semibold text-zinc-900 mb-2">Create & Finish</h3>
+                        <p class="text-zinc-600">The piece is finished with sustainable materials and coatings, resulting in a unique, handcrafted piece of furniture ready for a new home.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery (Products) Section -->
+        <section id="gallery" class="py-20 md:py-32 bg-stone-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-zinc-900 mb-2">Our Collection</h2>
+                    <p class="text-zinc-600 max-w-2xl mx-auto">Discover industrial-chic designs that make a sustainable statement.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Product Images -->
+    <div class="group animate-on-scroll">
+        <div class="overflow-hidden rounded-lg h-64">
+            <img src="/image/chairs.png" alt="Lounge Chair" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-zinc-900">Lounge Chair</h3>
+                    <div class="product-card">
+            <button onclick="addToCart('Lounge Chair',299,'img/lounge-chair.jpg')">
+                Add to Cart
+            </button>
+            </div>
+    </div>
+    <div class="group animate-on-scroll" style="transition-delay: 100ms;">
+        <div class="overflow-hidden rounded-lg h-64">
+            <img src="/image/coffee table.png" alt="Coffee Table" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+        </div>
+                    <h3 class="mt-4 text-lg font-semibold text-zinc-900">Coffee Table</h3>
+                    <div class="product-card">
+            <button onclick="addToCart('Coffee Table',199,'img/coffee-table.jpg')">
+                Add to Cart
+            </button>
+            </div>
+    </div>
+    <div class="group animate-on-scroll" style="transition-delay: 200ms;">
+        <div class="overflow-hidden rounded-lg h-64">
+            <img src="/image/stool2.png" alt="Stool" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-zinc-900">Stool</h3>
+        <button class="add-cart-btn"
+        onclick="addToCart('Stool',120,'img/stool.jpg')">
+        Add to Cart
+        </button>
+    </div>
+    <div class="group animate-on-scroll" style="transition-delay: 300ms;">
+        <div class="overflow-hidden rounded-lg h-64">
+            <img src="/image/planter.png" alt="Planter" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-zinc-900">Planter</h3>
+       <button class="add-cart-btn"
+        onclick="addToCart('Planter',80,'img/planter.jpg')">
+        Add to Cart
+        </button>
+    </div>
+    
+    <div class="group animate-on-scroll" style="transition-delay: 400ms;">
+        <div class="overflow-hidden rounded-lg h-64">
+            <img src="/image/ottoman.png" alt="Ottoman" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-zinc-900">Ottoman</h3>
+       <button class="add-cart-btn"
+        onclick="addToCart('Ottoman',210,'img/ottoman.jpg')">
+        Add to Cart
+        </button>
+    </div>
+    <div class="group animate-on-scroll" style="transition-delay: 500ms;">
+        <div class="overflow-hidden rounded-lg h-64">
+            <img src="/image/lounge1.png" alt="Bench" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-zinc-900">Bench</h3>
+     <button class="add-cart-btn"
+        onclick="addToCart('Bench',180,'img/bench.jpg')">
+        Add to Cart
+        </button>
+        </button>
+    </div>
+</div>
+
+        </section>
+
+        <!-- Customizer Section -->
+        <section id="customize" class="py-20 md:py-32 bg-stone-200">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-zinc-900 mb-2">Design Your Own Piece</h2>
+                    <p class="text-zinc-600 max-w-2xl mx-auto">Bring your vision to life in three simple steps.</p>
+             </div>
+       <script>
+      </script>
+
+                <div class="max-w-4xl mx-auto animate-on-scroll space-y-16">
+                    <!-- Step-by-step options -->
+                    <div class="space-y-12">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-zinc-900 mb-6 flex items-center"><span class="bg-amber-800 text-white rounded-full w-10 h-10 inline-flex items-center justify-center mr-4 text-xl font-bold">1</span>Choose Your Product</h3>
+                            <div id="product-options" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                <div><input type="radio" name="product" id="prod-chair" value="Lounge Chair" class="sr-only customizer-input" checked><label for="prod-chair" class="customizer-label">Lounge Chair</label></div>
+                                <div><input type="radio" name="product" id="prod-table" value="Coffee Table" class="sr-only customizer-input"><label for="prod-table" class="customizer-label">Coffee Table</label></div>
+                                <div><input type="radio" name="product" id="prod-stool" value="Stool" class="sr-only customizer-input"><label for="prod-stool" class="customizer-label">Stool</label></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-zinc-900 mb-6 flex items-center"><span class="bg-amber-800 text-white rounded-full w-10 h-10 inline-flex items-center justify-center mr-4 text-xl font-bold">2</span>Select a Finish</h3>
+                            <div id="finish-options" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                <div><input type="radio" name="finish" id="finish-black" value="Matte Black" class="sr-only customizer-input" checked><label for="finish-black" class="customizer-label">Matte Black</label></div>
+                                <div><input type="radio" name="finish" id="finish-amber" value="Natural Amber" class="sr-only customizer-input"><label for="finish-amber" class="customizer-label">Natural Amber</label></div>
+                                <div><input type="radio" name="finish" id="finish-blue" value="Ocean Blue" class="sr-only customizer-input"><label for="finish-blue" class="customizer-label">Ocean Blue</label></div>
+                            </div>
+                        </div>
+
+                        <div>
+                           <h3 class="text-2xl font-semibold text-zinc-900 mb-6 flex items-center"><span class="bg-amber-800 text-white rounded-full w-10 h-10 inline-flex items-center justify-center mr-4 text-xl font-bold">3</span>Pick a Texture</h3>
+                            <div id="texture-options" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                <div><input type="radio" name="texture" id="texture-tread" value="Original Tread" class="sr-only customizer-input" checked><label for="texture-tread" class="customizer-label">Original Tread</label></div>
+                                <div><input type="radio" name="texture" id="texture-smooth" value="Smooth Finish" class="sr-only customizer-input"><label for="texture-smooth" class="customizer-label">Smooth Finish</label></div>
+                                <div><input type="radio" name="texture" id="texture-woven" value="Woven Pattern" class="sr-only customizer-input"><label for="texture-woven" class="customizer-label">Woven Pattern</label></div>
+                              <button class="cart-btn" onclick="addToCart('Tire Chair', 299, 'img/chair.png')">
+                                    Add to Cart
+                              </button>
+
+
+                          <style>
+                                        .cart-btn {
+                                        margin-top: 20px;
+                                        padding: 16px 40px;
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                        background: #d4a047;
+                                        color: #111;
+                                        border: none;
+                                        border-radius: 10px;
+                                        cursor: pointer;
+                                        transition: 0.3s;
+                                        box-shadow: 0px 4px 14px rgba(0,0,0,0.3);
+                                        }
+
+                                        .cart-btn:hover {
+                                        transform: scale(1.08);
+                                        background: #b98a35;
+                                        box-shadow: 0px 6px 18px rgba(0,0,0,0.45);
+                                        }
+
+                                        .cart-btn:active {
+                                        transform: scale(1.02);
+                                        }
+                                        </style>
+
+
+                      </div>
+                  </div>
+                </div>
+<!-- 
+                    <!-- Preview & Share -->
+                     <!--
+                    <div class="bg-stone-50 p-6 sm:p-8 rounded-lg shadow-xl">
+                        <h3 class="text-3xl font-bold text-zinc-900 mb-8 text-center">Your Custom Design Summary</h3>
+                        <div class="grid md:grid-cols-2 gap-8 items-start">
+                             <!-- Summary and Form -->
+                            <!-- <div class="space-y-6">
+                                <div id="customizer-summary" class="space-y-3 text-zinc-700 p-4 bg-stone-100 rounded-md border border-stone-200">
+                                   <p><strong>Product:</strong> <span id="summary-product"></span></p>
+                                   <p><strong>Finish:</strong> <span id="summary-finish"></span></p>
+                                   <p><strong>Texture:</strong> <span id="summary-texture"></span></p>
+                                </div>
+                                
+                                <form id="customizer-form">
+                                    <p class="text-lg font-semibold text-zinc-800 mb-3">Share it with us!</p>
+                                     <div class="space-y-4">
+                                        <input id="customizer-name" type="text" placeholder="Your Name" required class="w-full p-3 rounded-md border border-stone-300 bg-white focus:ring-2 focus:ring-amber-600 focus:border-amber-600 transition">
+                                        <input id="customizer-email" type="email" placeholder="Your Email" required class="w-full p-3 rounded-md border border-stone-300 bg-white focus:ring-2 focus:ring-amber-600 focus:border-amber-600 transition">
+                                        <button type="submit" class="w-full bg-amber-800 text-white font-bold py-3 px-8 rounded-full hover:bg-amber-900 transition-all duration-300 disabled:bg-gray-400">
+                                            Get a Quote
+                                        </button>
+                                        <p id="customizer-feedback" class="text-center text-sm text-amber-800 h-8 flex items-center justify-center opacity-0 transition-opacity duration-500"></p>
+                                          <a href="order.html" class="order-btn">Customize Your Furniture</a>
+
+                                                    <style>
+                                                    .order-btn {
+                                                    display: inline-block;
+                                                    padding: 15px 40px;
+                                                    background: #d4a047;
+                                                    color: #111;
+                                                    font-weight: 600;
+                                                    border-radius: 12px;
+                                                    text-decoration: none;
+                                                    letter-spacing: 1px;
+                                                    transition: 0.35s ease;
+                                                    box-shadow: 0 0 0 rgba(212,160,71,0.5);
+                                                    }
+
+                                                    .order-btn:hover {
+                                                    transform: scale(1.08);
+                                                    box-shadow: 0 0 18px rgba(212,160,71,0.75);
+                                                    }
+                                                    </style>
+
+
+                                    </div>
+                                </form>
+                            </div>
+
+                             Preview Image
+                            <div class="aspect-w-4 aspect-h-3">
+                               <img id="customizer-preview-image" src="https://placehold.co/600x450/e2e8f0/333333?text=Your+Design" alt="Custom furniture preview" class="w-full h-full object-cover rounded-md">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> 
+             
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 bg-stone-50">
+            <div class="container mx-auto px-6">
+                <div class="max-w-xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold text-zinc-900 mb-2">Get in Touch</h2>
+                    <p class="text-zinc-600 mb-8">Have a general question or a project in mind? We'd love to hear from you.</p>
+                    <form id="contact-form" class="space-y-6 animate-on-scroll">
+                        <input id="form-name" type="text" placeholder="Your Name" required class="w-full p-3 rounded-md border border-stone-300 bg-white focus:ring-2 focus:ring-amber-600 focus:border-amber-600 transition">
+                        <input id="form-email" type="email" placeholder="Your Email" required class="w-full p-3 rounded-md border border-stone-300 bg-white focus:ring-2 focus:ring-amber-600 focus:border-amber-600 transition">
+                        <textarea id="form-message" placeholder="Your Message" rows="5" required class="w-full p-3 rounded-md border border-stone-300 bg-white focus:ring-2 focus:ring-amber-600 focus:border-amber-600 transition"></textarea>
+                        <button id="submit-button" type="submit" class="w-full bg-amber-800 text-white font-bold py-3 px-8 rounded-full hover:bg-amber-900 transition-all duration-300 disabled:bg-gray-400">
+                            Send Message
+                        </button>
+                    </form>
+                    <div id="form-feedback" class="mt-4 text-amber-800 font-medium opacity-0 transition-opacity duration-500 h-5"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-900 text-stone-200 py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 NARDO. All rights reserved. Reinventing the wheel, beautifully.</p>
+            <div class="mt-4">
+                <a href="#" id="view-submissions-link" class="text-sm text-stone-400 hover:text-white transition">View Submissions</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Submissions Modal -->
+    <div id="submissions-modal" class="fixed inset-0 bg-black bg-opacity-75 z-[60] hidden items-center justify-center p-4" aria-modal="true" role="dialog">
+        <div class="bg-stone-50 text-zinc-800 rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div class="p-6 border-b border-stone-200 flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-zinc-900">All Submissions</h3>
+                <button id="close-modal-btn" class="text-zinc-500 hover:text-zinc-900 text-3xl" aria-label="Close modal">&times;</button>
+            </div>
+            <div id="submissions-content" class="p-6 overflow-y-auto space-y-4">
+                <!-- Submissions will be injected here -->
+            </div>
+            <div class="p-6 border-t border-stone-200 mt-auto text-right bg-stone-100 rounded-b-lg">
+                <button id="clear-submissions-btn" class="bg-red-600 text-white font-bold py-2 px-6 rounded-full hover:bg-red-700 transition-all duration-300">
+                    Clear All
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const API_URL = '/api/submissions';
+
+        // --- Smooth Scrolling ---
+       const navLinks = document.querySelectorAll('a[href^="#"]:not(.cart-link)');
+navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            e.preventDefault();
+            targetElement.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+        // --- Intersection Observer for Scroll Animations ---
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        animatedElements.forEach(el => observer.observe(el));
+
+        // --- Contact Form ---
+        const contactForm = document.getElementById('contact-form');
+        const submitButton = document.getElementById('submit-button');
+        const formFeedback = document.getElementById('form-feedback');
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('form-name').value.trim();
+            const email = document.getElementById('form-email').value.trim();
+            const message = document.getElementById('form-message').value.trim();
+
+            if (!name || !email || !message) {
+                formFeedback.textContent = 'Please fill out all fields.';
+                formFeedback.style.opacity = '1';
+                setTimeout(() => { formFeedback.style.opacity = '0'; }, 3000);
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'contact', name, email, message, submittedAt: new Date().toISOString() })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                formFeedback.textContent = `Thank you! A confirmation has been sent to ${email}.`;
+                formFeedback.style.opacity = '1';
+                contactForm.reset();
+                
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Message';
+                
+                setTimeout(() => {
+                    formFeedback.style.opacity = '0';
+                }, 4000);
+
+            } catch (error) {
+                console.error('Failed to save message:', error);
+                formFeedback.textContent = 'Sorry, something went wrong. Please try again.';
+                formFeedback.style.opacity = '1';
+
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Message';
+
+                setTimeout(() => {
+                    formFeedback.style.opacity = '0';
+                }, 4000);
+            }
+        });
+
+        // --- Submissions Modal Logic ---
+        const viewSubmissionsLink = document.getElementById('view-submissions-link');
+        const submissionsModal = document.getElementById('submissions-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const submissionsContent = document.getElementById('submissions-content');
+        const clearSubmissionsBtn = document.getElementById('clear-submissions-btn');
+
+        async function renderSubmissions() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Failed to fetch submissions.');
+                const allSubmissions = await response.json();
+
+                submissionsContent.innerHTML = (allSubmissions.length === 0) 
+                    ? '<p class="text-zinc-500 text-center py-8">No submissions yet.</p>' 
+                    : '';
+                
+                if (allSubmissions.length > 0) {
+                     allSubmissions.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+                     allSubmissions.forEach(sub => {
+                        const submissionEl = document.createElement('div');
+                        submissionEl.className = 'p-4 border border-stone-200 rounded-lg bg-stone-100 shadow-sm';
+                        const submittedDate = new Date(sub.submittedAt);
+                        const formattedDate = `${submittedDate.toLocaleDateString()} at ${submittedDate.toLocaleTimeString()}`;
+                        const safeName = (sub.name || '').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        const safeEmail = (sub.email || '').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+                        let contentHtml = '';
+                        if (sub.type === 'contact') {
+                            const safeMessage = (sub.message || '').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                            contentHtml = `<p class="text-zinc-700 whitespace-pre-wrap break-words">${safeMessage}</p>`;
+                        } else if (sub.type === 'design') {
+                            contentHtml = `
+                                <p class="text-sm text-amber-900 font-semibold mb-2">CUSTOM DESIGN REQUEST</p>
+                                <ul class="list-disc list-inside text-zinc-700 space-y-1">
+                                    <li><strong>Product:</strong> ${sub.product}</li>
+                                    <li><strong>Finish:</strong> ${sub.finish}</li>
+                                    <li><strong>Texture:</strong> ${sub.texture}</li>
+                                </ul>
+                            `;
+                        }
+
+                        submissionEl.innerHTML = `
+                            <div class="flex justify-between items-start mb-2 gap-4">
+                                <p class="font-bold text-zinc-800 break-words">${safeName} <span class="font-normal text-zinc-500">&lt;${safeEmail}&gt;</span></p>
+                                <p class="text-sm text-zinc-500 flex-shrink-0">${formattedDate}</p>
+                            </div>
+                            ${contentHtml}
+                        `;
+                        submissionsContent.appendChild(submissionEl);
+                    });
+                }
+            } catch (error) {
+                console.error('Error rendering submissions:', error);
+                submissionsContent.innerHTML = '<p class="text-red-600 text-center py-8">Error: Could not load submissions from the server.</p>';
+            }
+        }
+
+        function openModal() {
+            renderSubmissions();
+            submissionsModal.classList.remove('hidden');
+            submissionsModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            submissionsModal.classList.add('hidden');
+            submissionsModal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        
+        viewSubmissionsLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+        closeModalBtn.addEventListener('click', closeModal);
+        submissionsModal.addEventListener('click', (e) => { if (e.target === submissionsModal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !submissionsModal.classList.contains('hidden')) closeModal(); });
+        
+        clearSubmissionsBtn.addEventListener('click', async () => {
+            if (confirm('Are you sure you want to delete ALL submissions from the server? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(API_URL, { method: 'DELETE' });
+                    if (!response.ok) throw new Error('Failed to clear submissions.');
+                    await renderSubmissions();
+                } catch(error) {
+                    console.error('Error clearing submissions:', error);
+                    alert('Could not clear submissions. Please check the server.');
+                }
+            }
+        });
+
+        // --- Furniture Customizer Logic ---
+        const summaryProduct = document.getElementById('summary-product');
+        const summaryFinish = document.getElementById('summary-finish');
+        const summaryTexture = document.getElementById('summary-texture');
+        const customizerForm = document.getElementById('customizer-form');
+        const customizerFeedback = document.getElementById('customizer-feedback');
+        
+        function updateCustomizerSummary() {
+            const product = document.querySelector('input[name="product"]:checked').value;
+            const finish = document.querySelector('input[name="finish"]:checked').value;
+            const texture = document.querySelector('input[name="texture"]:checked').value;
+
+            summaryProduct.textContent = product;
+            summaryFinish.textContent = finish;
+            summaryTexture.textContent = texture;
+        }
+
+        document.querySelectorAll('.customizer-input').forEach(option => {
+            option.addEventListener('change', updateCustomizerSummary);
+        });
+        
+        customizerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('customizer-name').value.trim();
+            const email = document.getElementById('customizer-email').value.trim();
+            const product = document.querySelector('input[name="product"]:checked').value;
+            const finish = document.querySelector('input[name="finish"]:checked').value;
+            const texture = document.querySelector('input[name="texture"]:checked').value;
+            const submitButton = customizerForm.querySelector('button[type="submit"]');
+
+            if (!name || !email) {
+                customizerFeedback.textContent = "Please enter your name and email.";
+                customizerFeedback.style.opacity = '1';
+                setTimeout(() => { customizerFeedback.style.opacity = '0'; }, 3000);
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'design', name, email, product, finish, texture, submittedAt: new Date().toISOString() })
+                });
+                
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                customizerFeedback.textContent = `Thank you! A quote will be sent to ${email} shortly.`;
+                customizerFeedback.style.opacity = '1';
+                customizerForm.reset();
+                // Reset summary to defaults after form reset
+                document.querySelector('input[name="product"][value="Lounge Chair"]').checked = true;
+                document.querySelector('input[name="finish"][value="Matte Black"]').checked = true;
+                document.querySelector('input[name="texture"][value="Original Tread"]').checked = true;
+                updateCustomizerSummary();
+
+                submitButton.disabled = false;
+                submitButton.textContent = 'Get a Quote';
+
+                setTimeout(() => {
+                    customizerFeedback.style.opacity = '0';
+                }, 4000);
+            } catch (error) {
+                console.error('Failed to save design request:', error);
+                customizerFeedback.textContent = 'Sorry, something went wrong. Please try again.';
+                customizerFeedback.style.opacity = '1';
+
+                submitButton.disabled = false;
+                submitButton.textContent = 'Get a Quote';
+
+                setTimeout(() => {
+                    customizerFeedback.style.opacity = '0';
+                }, 4000);
+            }
+        });
+
+        // Initial call to set the default summary
+        updateCustomizerSummary();
+    });
+</script>
+ <script>
+            async function updateCartCounter() {
+            const res = await fetch("/api/cart");
+            const items = await res.json();
+            document.getElementById("cart-count").textContent = items.length;
+            }
+            updateCartCounter();
+
+ </script>
+    
+<script src="script.js"></script>
+<script>
+async function addToCart(name, price, image) {
+  try {
+    const response = await fetch("/api/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, price, image })
+    });
+
+    if (!response.ok) throw new Error("Failed to add item");
+
+    await updateCartCount();
+    showToast(`${name} added to cart 🛒`);
+  } catch (error) {
+    console.error(error);
+    showToast("Something went wrong ❌");
+  }
+}
+
+async function updateCartCount() {
+  try {
+    const res = await fetch("/api/cart");
+    if (!res.ok) throw new Error("Cart fetch failed");
+    const cart = await res.json();
+    const cartCountEl = document.getElementById("cart-count");
+    if (cartCountEl) cartCountEl.innerText = cart.length;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function showToast(message) {
+  const toast = document.createElement("div");
+  toast.textContent = message;
+  Object.assign(toast.style, {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    background: "#d4a047",
+    color: "#111",
+    padding: "12px 20px",
+    borderRadius: "10px",
+    fontWeight: "600",
+    boxShadow: "0 0 15px rgba(0,0,0,0.4)",
+    opacity: "0",
+    transform: "translateY(20px)",
+    transition: "all 0.4s ease",
+    zIndex: "9999"
+  });
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "1";
+    toast.style.transform = "translateY(0)";
+  }, 50);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(20px)";
+    setTimeout(() => toast.remove(), 500);
+  }, 2500);
+}
+
+document.addEventListener("DOMContentLoaded", updateCartCount);
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const res = await fetch("/api/me");
+  const data = await res.json();
+
+  if (data.loggedIn) {
+
+    document.getElementById("loginBtn").classList.add("hidden");
+    document.getElementById("registerBtn").classList.add("hidden");
+
+    document.getElementById("profileBtn").classList.remove("hidden");
+    document.getElementById("logoutBtn").classList.remove("hidden");
+
+    const welcome = document.getElementById("welcomeText");
+    welcome.classList.remove("hidden");
+    welcome.innerHTML = "Hi, " + data.name;
+  }
+
+});
+
+async function logout(){
+  await fetch("/api/logout");
+  location.reload();
+}
+</script>
+<script>
+    async function addToCart(name, price, image) {
+
+  const res = await fetch("/api/cart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name: name,
+      price: price,
+      image: image
+    })
+  });
+
+  const data = await res.json();
+
+  if(data.success){
+    alert("Added to cart 🛒");
+  }else{
+    alert("Please login first");
+  }
+
+}
+</script>
+
+</body>
+</html>
