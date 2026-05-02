@@ -9,11 +9,6 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 /* ================= DATABASE ================= */
-if (!process.env.MYSQL_URL) {
-  console.error("MYSQL_URL is not set!");
-  process.exit(1);
-}
-
 const url = new URL(process.env.MYSQL_URL);
 
 const pool = mysql.createPool({
