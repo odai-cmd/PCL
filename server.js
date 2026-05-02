@@ -8,6 +8,13 @@ const nodemailer = require("nodemailer");
 
 const app = express();
 
+/* ================= START SERVER FIRST (CRITICAL FOR RENDER) ================= */
+const PORT = process.env.PORT || 10000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log("✅ Server running on port " + PORT);
+});
+
 /* ================= DATABASE ================= */
 
 /* ================= DATABASE ================= */
@@ -205,9 +212,3 @@ app.get("/", (req, res) => {
 });
 
 /* ================= START SERVER ================= */
-
-const PORT = process.env.PORT || 10000;
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log("✅ Server running on port " + PORT);
-});
