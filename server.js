@@ -9,14 +9,11 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 /* ================= DATABASE ================= */
-/* ================= DATABASE ================= */
 
 if (!process.env.MYSQL_URL) {
-  console.error("MYSQL_URL is not set in environment variables");
+  console.error("❌ MYSQL_URL is not set");
   process.exit(1);
 }
-
-const mysql = require("mysql2/promise");
 
 let pool;
 
@@ -29,17 +26,19 @@ try {
     password: url.password,
     database: url.pathname.replace("/", ""),
     port: url.port || 3306,
+    waitForConnections: true,
+    connectionLimit: 10,
   });
 
   console.log("✅ MySQL pool created");
-
 } catch (err) {
-  console.error("❌ Invalid MYSQL_URL:", process.env.MYSQL_URL);
+  console.error("❌ Invalid MYSQL_URL");
   console.error(err);
   process.exit(1);
 }
 
 /* ================= EMAIL ================= */
+
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -51,19 +50,23 @@ const transporter = nodemailer.createTransport({
 });
 
 /* ================= MIDDLEWARE ================= */
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/auth", express.static(path.join(__dirname, "auth")));
 
-app.use(session({
-  secret: "nardo-secret",
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    secret: "nardo-secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 /* ================= AUTH ================= */
+
 app.post("/api/register", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -85,9 +88,8 @@ app.post("/api/register", async (req, res) => {
     );
 
     res.json({ success: true, message: "Registration successful" });
-
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ success: false });
   }
 });
@@ -101,29 +103,33 @@ app.post("/api/login", async (req, res) => {
       [email]
     );
 
-    if (rows.length === 0)
+    if (rows.length === 0) {
       return res.json({ success: false, message: "User not found" });
+    }
 
     const user = rows[0];
     const ok = await bcrypt.compare(password, user.password);
 
-    if (!ok)
+    if (!ok) {
       return res.json({ success: false, message: "Wrong password" });
+    }
 
     req.session.userId = user.id;
     req.session.userName = user.name;
 
     res.json({ success: true, name: user.name });
-
   } catch (err) {
+    console.error(err);
     res.status(500).json({ success: false });
   }
 });
 
 /* ================= CART ================= */
+
 app.post("/api/cart", async (req, res) => {
-  if (!req.session.userId)
+  if (!req.session.userId) {
     return res.status(401).json({ message: "Login first" });
+  }
 
   const { name, price, image } = req.body;
 
@@ -134,8 +140,8 @@ app.post("/api/cart", async (req, res) => {
     );
 
     res.json({ success: true });
-
   } catch (err) {
+    console.error(err);
     res.status(500).json({ success: false });
   }
 });
@@ -143,20 +149,27 @@ app.post("/api/cart", async (req, res) => {
 app.get("/api/cart", async (req, res) => {
   if (!req.session.userId) return res.json([]);
 
-  const [rows] = await pool.query(
-    "SELECT * FROM cart WHERE user_id=?",
-    [req.session.userId]
-  );
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM cart WHERE user_id=?",
+      [req.session.userId]
+    );
 
-  res.json(rows);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json([]);
+  }
 });
 
 /* ================= CHECKOUT ================= */
-app.post("/api/checkout", async (req, res) => {
-  if (!req.session.userId)
-    return res.json({ success: false, message: "Login first" });
 
-  const { name, email, payment } = req.body;
+app.post("/api/checkout", async (req, res) => {
+  if (!req.session.userId) {
+    return res.json({ success: false, message: "Login first" });
+  }
+
+  const { name, email } = req.body;
 
   try {
     const [items] = await pool.query(
@@ -165,37 +178,36 @@ app.post("/api/checkout", async (req, res) => {
     );
 
     let total = 0;
-    items.forEach(i => total += i.price * i.quantity);
+    items.forEach((i) => (total += i.price * i.quantity));
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Order Confirmation",
-      html: `<h2>Thank you ${name}</h2><p>Total: $${total}</p>`
+      html: `<h2>Thank you ${name}</h2><p>Total: $${total}</p>`,
     });
 
-    await pool.query(
-      "DELETE FROM cart WHERE user_id=?",
-      [req.session.userId]
-    );
+    await pool.query("DELETE FROM cart WHERE user_id=?", [
+      req.session.userId,
+    ]);
 
     res.json({ success: true });
-
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ success: false });
   }
 });
 
 /* ================= PAGES ================= */
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 /* ================= START SERVER ================= */
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log("✅ Server running on port " + PORT);
 });
-
