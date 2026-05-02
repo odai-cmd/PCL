@@ -58,19 +58,22 @@ const transporter = nodemailer.createTransport({
 
 /* ================= MIDDLEWARE ================= */
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/auth", express.static(path.join(__dirname, "auth")));
+app.set("trust proxy", 1);
 
-app.use(
-  session({
-    secret: "nardo-secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
+app.use(session({
+  secret: "nardo-secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: true,
+    sameSite: "none",
+  }
+}));
 
 /* ================= AUTH ================= */
 

@@ -123,6 +123,7 @@ document.getElementById("loginForm").onsubmit = async function(e){
   const password = this.password.value;
 
   const res = await fetch("/api/login", {
+  credentials: "include",
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
