@@ -70,11 +70,14 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,
-    sameSite: "none",
+    secure: false,        // ✅ IMPORTANT for Render
+    sameSite: "lax",      // ✅ IMPORTANT
   }
 }));
 
+    app.use(express.static(path.join(__dirname, "public")));
+    app.use(express.static(path.join(__dirname, "auth")));
+    app.use(express.static(path.join(__dirname, "uploads")));
 /* ================= AUTH ================= */
 
 app.post("/api/register", async (req, res) => {
