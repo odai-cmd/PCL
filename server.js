@@ -7,7 +7,6 @@ const path = require("path");
 const nodemailer = require("nodemailer");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 /* ================= DATABASE ================= */
 if (!process.env.MYSQL_URL) {
@@ -179,6 +178,8 @@ app.get("/", (req, res) => {
 });
 
 /* ================= START SERVER ================= */
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log("✅ Server running on port " + PORT);
 });
