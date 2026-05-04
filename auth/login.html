@@ -1,84 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NARDO Login</title>
-
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .login-box {
-      width: 380px;
-      background: #1a1a1a;
-      padding: 40px;
-      border-radius: 14px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.4);
-      text-align: center;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 18px;
-      border-radius: 8px;
-      border: 1px solid #444;
-      background: #222;
-      color: #fff;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      background: #d4a047;
-      color: #111;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    #msg {
-      margin-top: 12px;
-      text-align: center;
-    }
-
-    a {
-      color: #d4a047;
-      text-decoration: none;
-      font-size: 14px;
-      display: block;
-      margin-top: 10px;
-    }
-  </style>
 </head>
+<body style="background:#111;color:#fff;font-family:Poppins;text-align:center;margin-top:120px;">
 
-<body>
+<h2>Login</h2>
 
-  <div class="login-box">
-    <h2>Welcome Back</h2>
+<form id="loginForm">
+  <input type="email" id="email" placeholder="Email" required><br><br>
+  <input type="password" id="password" placeholder="Password" required><br><br>
+  <button type="submit">Login</button>
+</form>
 
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-
-      <button type="submit">Login</button>
-      <p id="msg"></p>
-    </form>
-
-    <a href="register.html">Create a new account</a>
-  </div>
+<p id="msg"></p>
 
 <script>
 document.getElementById("loginForm").addEventListener("submit", async function(e){
@@ -87,32 +22,18 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  try {
-    const res = await fetch("/api/login", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
+  const res = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ email, password })
+  });
 
-    const data = await res.json();
-    const msg = document.getElementById("msg");
+  const data = await res.json();
+  document.getElementById("msg").textContent = data.message;
 
-    if(!data.success){
-      msg.style.color = "red";
-      msg.textContent = data.message;
-      return;
-    }
-
-    msg.style.color = "#4caf50";
-    msg.textContent = "Login successful! Redirecting...";
-
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 1200);
-
-  } catch (err) {
-    document.getElementById("msg").textContent = "Server error. Try again.";
+  if(data.success){
+    setTimeout(()=> window.location.href="/", 1000);
   }
 });
 </script>
